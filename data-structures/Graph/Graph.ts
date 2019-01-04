@@ -7,6 +7,7 @@ export interface IGraph<T> {
   addEdge: (edge: IEdge<T>) => this
   calculateWeight: () => number
   neighborsForKey: (key: string) => Array<IVertex<T>>|[]
+  toString: () => string
 };
 
 class Graph<T> implements IGraph<T> {
@@ -14,7 +15,7 @@ class Graph<T> implements IGraph<T> {
   private edges: { [key: string]: IEdge<T> } = {};
   private isDirected: boolean;
 
-  constructor(isDirected: boolean) {
+  constructor(isDirected: boolean = false) {
     this.isDirected = isDirected;
   }
 
@@ -25,7 +26,7 @@ class Graph<T> implements IGraph<T> {
   }
 
   getVertexByKey(key: string) {
-    return this.addVertex[key];
+    return this.vertices[key];
   }
 
   addEdge(edge: IEdge<T>) {
@@ -43,7 +44,7 @@ class Graph<T> implements IGraph<T> {
       endVertex = to;
     }
 
-    if (this.addEdge[edge.getKey()]) {
+    if (this.edges[edge.getKey()]) {
       throw new Error('Edge has already been added before');
     } else {
       this.edges[edge.getKey()] = edge;
@@ -60,7 +61,7 @@ class Graph<T> implements IGraph<T> {
   }
 
   getEdgeByKey(edge: IEdge<T>) {
-    return this.addEdge[edge.getKey()];
+    return this.edges[edge.getKey()];
   }
 
   deleteEdge(edge: IEdge<T>) {
@@ -79,13 +80,17 @@ class Graph<T> implements IGraph<T> {
 
   calculateWeight() {
     return Object
-      .keys(this.addEdge)
-      .map(key => this.addEdge[key])
-      .reduce((acc, { weigth }) => acc + weigth, 0);
+      .keys(this.edges)
+      .map(key => this.edges[key])
+      .reduce((acc, { weight }) => acc + weight, 0);
   }
 
   neighborsForKey(key: string) {
     return this.vertices[key] ? this.vertices[key].getNeighbors() : [];
+  }
+
+  toString() {
+    return Object.keys(this.vertices).toString();
   }
 }
 

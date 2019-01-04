@@ -12,18 +12,18 @@ export interface IVertex<T> {
 };
 
 class Vertex<T> implements IVertex<T> {
-  private edges: Array<IEdge<T>> = [];
   public key: string;
   public value: T;
+  public edges: Array<IEdge<T>>;
 
   constructor(value: T, key: string) {
     this.value = value;
     this.key = key;
+    this.edges = [];
   }
 
   addEdge(edge: IEdge<T>) {
-    const key = edge.getKey();
-    if (this.edges.findIndex(({ getKey }) => getKey() === key) === -1) {
+    if (!this.edges.includes(edge)) {
       this.edges.push(edge);
     }
 
