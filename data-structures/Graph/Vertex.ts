@@ -3,16 +3,16 @@ import { IEdge } from './Edge';
 export interface IVertex<T> {
   key: string
   value: T
-  addEdge: (edge: IEdge) => this
-  deleteEdge: (edge: IEdge) => this
-  getEdges: () => Array<IEdge>
+  addEdge: (edge: IEdge<T>) => this
+  deleteEdge: (edge: IEdge<T>) => this
+  getEdges: () => Array<IEdge<T>>
   getNeighbors: () => Array<IVertex<T>>
   getDegree: () => number
   deleteAllEdges: () => void
 };
 
 class Vertex<T> implements IVertex<T> {
-  private edges: Array<IEdge> = [];
+  private edges: Array<IEdge<T>> = [];
   public key: string;
   public value: T;
 
@@ -21,7 +21,7 @@ class Vertex<T> implements IVertex<T> {
     this.key = key;
   }
 
-  addEdge(edge: IEdge) {
+  addEdge(edge: IEdge<T>) {
     const key = edge.getKey();
     if (this.edges.findIndex(({ getKey }) => getKey() === key) === -1) {
       this.edges.push(edge);
@@ -30,7 +30,7 @@ class Vertex<T> implements IVertex<T> {
     return this;
   }
 
-  deleteEdge(edge: IEdge) {
+  deleteEdge(edge: IEdge<T>) {
     const key = edge.getKey();
     this.edges = this.edges.filter(({ getKey }) => getKey() !== key);
 

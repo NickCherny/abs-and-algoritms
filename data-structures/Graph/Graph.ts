@@ -3,8 +3,10 @@ import { IVertex } from './Vertex';
 
 export interface IGraph<T> {
   addVertex: (vertex: IVertex<T>) => number
+  getEdgeByKey: (edge: IEdge<T>) => IEdge<T>|null
   addEdge: (edge: IEdge<T>) => this
   calculateWeight: () => number
+  neighborsForKey: (key: string) => Array<IVertex<T>>|[]
 };
 
 class Graph<T> implements IGraph<T> {
@@ -57,6 +59,10 @@ class Graph<T> implements IGraph<T> {
     return this;
   }
 
+  getEdgeByKey(edge: IEdge<T>) {
+    return this.addEdge[edge.getKey()];
+  }
+
   deleteEdge(edge: IEdge<T>) {
     if (this.edges[edge.getKey()]) {
       delete this.edges[edge.getKey()];
@@ -76,6 +82,10 @@ class Graph<T> implements IGraph<T> {
       .keys(this.addEdge)
       .map(key => this.addEdge[key])
       .reduce((acc, { weigth }) => acc + weigth, 0);
+  }
+
+  neighborsForKey(key: string) {
+    return this.vertices[key] ? this.vertices[key].getNeighbors() : [];
   }
 }
 
