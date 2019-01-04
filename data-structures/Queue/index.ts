@@ -8,7 +8,7 @@ class Queue<T> implements IQueue<T> {
   private container: Array<T> = [];
   private head = 0;
 
-  push(value: T) {
+  push(value: T): void {
     this.container.push(value);
   }
 
