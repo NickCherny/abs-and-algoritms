@@ -1,129 +1,58 @@
-interface IVertex {
+import { IEdge } from './Edge';
 
-}
+export interface IVertex<T> {
+  key: string
+  value: T
+  addEdge: (edge: IEdge<T>) => this
+  deleteEdge: (edge: IEdge<T>) => this
+  getEdges: () => Array<IEdge<T>>
+  getNeighbors: () => Array<IVertex<T>>
+  getDegree: () => number
+  deleteAllEdges: () => void
+};
 
-class Vertex {
-  constructor(value) {
-    const edgeComparator = (edgeA, edgeB) => {
-      if (edgeA.getKey() === edgeB.getKey()) {
-        return 0;
-      }
+class Vertex<T> implements IVertex<T> {
+  private edges: Array<IEdge<T>> = [];
+  public key: string;
+  public value: T;
 
-      return edgeA.getKey() < edgeB.getKey() ? -1 : 1;
-    };
-
-    // Normally you would store string value like vertex name.
-    // But generally it may be any object as well
+  constructor(value: T, key: string) {
     this.value = value;
-    this.edges = new LinkedList(edgeComparator);
+    this.key = key;
   }
 
-  /**
-   * @param {GraphEdge} edge
-   * @returns {GraphVertex}
-   */
-  addEdge(edge) {
-    this.edges.append(edge);
+  addEdge(edge: IEdge<T>) {
+    const key = edge.getKey();
+    if (this.edges.findIndex(({ getKey }) => getKey() === key) === -1) {
+      this.edges.push(edge);
+    }
 
     return this;
   }
 
-  /**
-   * @param {GraphEdge} edge
-   */
-  deleteEdge(edge) {
-    this.edges.delete(edge);
+  deleteEdge(edge: IEdge<T>) {
+    const key = edge.getKey();
+    this.edges = this.edges.filter(({ getKey }) => getKey() !== key);
+
+    return this;
   }
 
-  /**
-   * @returns {GraphVertex[]}
-   */
-  getNeighbors() {
-    const edges = this.edges.toArray();
-
-    /** @param {LinkedListNode} node */
-    const neighborsConverter = (node) => {
-      return node.value.startVertex === this ? node.value.endVertex : node.value.startVertex;
-    };
-
-    // Return either start or end vertex.
-    // For undirected graphs it is possible that current vertex will be the end one.
-    return edges.map(neighborsConverter);
-  }
-
-  /**
-   * @return {GraphEdge[]}
-   */
   getEdges() {
-    return this.edges.toArray().map(linkedListNode => linkedListNode.value);
+    return this.edges;
   }
 
-  /**
-   * @return {number}
-   */
+  getNeighbors() {
+    const key = this.key;
+    return this.edges.map(({ from, to }) => (from.key === key ? to : from));
+  }
+
   getDegree() {
-    return this.edges.toArray().length;
+    return this.edges.length;
   }
 
-  /**
-   * @param {GraphEdge} requiredEdge
-   * @returns {boolean}
-   */
-  hasEdge(requiredEdge) {
-    const edgeNode = this.edges.find({
-      callback: edge => edge === requiredEdge,
-    });
-
-    return !!edgeNode;
-  }
-
-  /**
-   * @param {GraphVertex} vertex
-   * @returns {boolean}
-   */
-  hasNeighbor(vertex) {
-    const vertexNode = this.edges.find({
-      callback: edge => edge.startVertex === vertex || edge.endVertex === vertex,
-    });
-
-    return !!vertexNode;
-  }
-
-  /**
-   * @param {GraphVertex} vertex
-   * @returns {(GraphEdge|null)}
-   */
-  findEdge(vertex) {
-    const edgeFinder = (edge) => {
-      return edge.startVertex === vertex || edge.endVertex === vertex;
-    };
-
-    const edge = this.edges.find({ callback: edgeFinder });
-
-    return edge ? edge.value : null;
-  }
-
-  /**
-   * @returns {string}
-   */
-  getKey() {
-    return this.value;
-  }
-
-  /**
-   * @return {GraphVertex}
-   */
   deleteAllEdges() {
-    this.getEdges().forEach(edge => this.deleteEdge(edge));
-
-    return this;
-  }
-
-  /**
-   * @param {function} [callback]
-   * @returns {string}
-   */
-  toString(callback) {
-    return callback ? callback(this.value) : `${this.value}`;
+    this.edges = [];
   }
 }
+
+export default Vertex;

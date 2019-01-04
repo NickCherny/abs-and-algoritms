@@ -1,37 +1,44 @@
-interface IEdge {
-  getKey: () => string;
-  reverse: () => this;
-  toString: () => string;
-}
+import { IVertex } from './Vertex';
 
-class Edge implements IEdge {
-  private startVertex: number;
-  private endVertex: number;
-  private weight: number;
+export interface IEdge<T> {
+  from: IVertex<T>
+  to: IVertex<T>
+  weight: number
+  getFrom: () => IVertex<T>
+  getTo: () => IVertex<T>
+  getKey: () => string
+  revert: () => this
+};
 
-  constructor(startVertex: number, endVertex: number, weight = 0) {
-    this.startVertex = startVertex;
-    this.endVertex = endVertex;
+class Edge<T> implements IEdge<T> {
+  public from: IVertex<T>;
+  public to: IVertex<T>;
+  public weight: number;
+
+  constructor(from: IVertex<T>, to: IVertex<T>, weight: number) {
+    this.from = from;
+    this.to = to;
     this.weight = weight;
   }
 
-  getKey() {
-    const startVertexKey = this.startVertex.getKey();
-    const endVertexKey = this.endVertex.getKey();
-
-    return `${startVertexKey}_${endVertexKey}`;
+  getFrom() {
+    return this.from;
   }
 
-  reverse() {
-    const tmp = this.startVertex;
-    this.startVertex = this.endVertex;
-    this.endVertex = tmp;
+  getTo() {
+    return this.to;
+  }
+
+  getKey() {
+    return `${this.from.key}_${this.to.key}`;
+  }
+
+  revert() {
+    const tmp = this.from;
+    this.from = this.to;
+    this.to = tmp;
 
     return this;
-  }
-
-  toString() {
-    return this.getKey();
   }
 }
 
