@@ -3,7 +3,7 @@ import { NodeType } from './createNode';
 
 export type GraphType<T> = {
   addNode: (vertex: NodeType<T>) => number
-  getEdgeByKey: (edge: EdgeType<T>) => EdgeType<T>|null
+  getEdgeByKey: (key: string) => EdgeType<T>|null
   getNodeByKey: (key: string) => NodeType<T>|null
   addEdge: (edge: EdgeType<T>) => void
   calculateWeight: () => number
@@ -22,8 +22,8 @@ export const createGraph = <T>(isDirected: boolean): GraphType<T> => {
       }
       return Object.keys(nodes).length - 1;
     },
-    getEdgeByKey(edge: EdgeType<T>) {
-      return edges[edge.getKey()];
+    getEdgeByKey(key: string) {
+      return edges[key];
     },
     getNodeByKey(key: string) {
       return nodes[key];
