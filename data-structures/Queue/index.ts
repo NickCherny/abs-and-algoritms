@@ -2,6 +2,7 @@ export interface IQueue<T> {
   push: (value: T) => void;
   pop: () => T;
   count: () => number;
+  isEmpty: () => boolean
 }
 
 class Queue<T> implements IQueue<T> {
@@ -25,6 +26,10 @@ class Queue<T> implements IQueue<T> {
 
   count() {
     return this.container.length;
+  }
+
+  isEmpty() {
+    return Boolean(this.container.length);
   }
 }
 
