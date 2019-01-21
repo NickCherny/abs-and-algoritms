@@ -27,6 +27,8 @@ export type LinkedList<T> = {
   append: (value: T) => void
   insert: (before: Node<T>, value: T) => void
   remove: (value: T) => Node<T>|null
+  toArray: () => Array<T>
+  deleteHead: () => Node<T>|null
 };
 
 export const createLinkedList = <T>(): LinkedList<T> => {
@@ -98,8 +100,40 @@ export const createLinkedList = <T>(): LinkedList<T> => {
           previous.next = next;
           next.previous = previous;
         }
+
+        length -= 1;
       }
       return targetNode;
+    },
+
+    toArray() {
+      let tmp = head;
+      const items: Array<T> = [];
+
+      while(tmp) {
+        items.push(tmp.value);
+        tmp = tmp.next;
+      }
+
+      return items;
+    },
+
+    deleteHead() {
+      let result: Node<T>|null;
+      if (!head) {
+        result = null;
+      } else {
+        result = head;
+        if (head.next) {
+          head = head.next;
+          head.previous = null;
+        } else {
+          head = null;
+        }
+      }
+      return result;
     }
   };
 }
+
+export default createLinkedList;
