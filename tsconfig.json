@@ -1,29 +1,26 @@
 {
-    "compilerOptions": {
-        "allowJs": false,
-        "allowSyntheticDefaultImports": true,
-        "baseUrl": ".",
-        "jsx": "react",
-        "declaration": true,
-        "lib": ["dom", "es2017", "esnext"],
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "noEmit": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "preserveConstEnums": true,
-        "removeComments": true,
-        "skipLibCheck": true,
-        "sourceMap": true,
-        "strict": true,
-        "target": "es2017",
-        "paths": {
-            "ui-kit/*": ["packages/ui-kit/*"]
-        },
-        "resolveJsonModule": true
-    },
-    "exclude": [
-        "build",
-        "__tests__"
-    ]
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "jsx": "react",
+    "declaration": true,
+    "lib": ["dom", "es2017", "esnext"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017",
+    "resolveJsonModule": true
+  },
+  "exclude": [
+    "build",
+    "__tests__"
+  ]
 }
