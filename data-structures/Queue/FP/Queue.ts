@@ -17,9 +17,9 @@ export const createQueue = <T>(): Queue<T> => {
       store.append(value);
     },
     denqueue() {
-      const lastNode = store.last();
-      if (lastNode) {
-        const { value } = lastNode;
+      const first = store.first();
+      if (first) {
+        const { value } = first;
         store.remove(value);
 
         return value;
