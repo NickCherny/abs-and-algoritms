@@ -17,15 +17,9 @@ export const createQueue = <T>(): Queue<T> => {
       store.append(value);
     },
     denqueue() {
-      const first = store.first();
-      if (first) {
-        const { value } = first;
-        store.remove(value);
+      const targetElement = store.deleteHead();
 
-        return value;
-      }
-
-      return null;
+      return targetElement ? targetElement.value : null;
     },
 
     isEmpty() {

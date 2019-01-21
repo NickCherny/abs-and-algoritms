@@ -17,6 +17,6 @@ describe('Queue', () => {
 
     expect(numbersQ.denqueue()).toBe(0);
     expect(numbersQ.denqueue()).toBe(1);
-    expect(numbersQ.denqueue()).toBe(3);
+    expect(numbersQ.denqueue()).toBe(2);
   });
 });
