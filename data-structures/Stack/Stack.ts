@@ -19,12 +19,12 @@ export const createStack = <T>(): Stack<T> => {
     },
 
     pop() {
-      const firstNode: LinkedListNode<T>|null = store.first();
-      if (firstNode) {
-        store.head = firstNode.next;
+      const last: LinkedListNode<T>|null = store.last();
+      if (last) {
+        store.remove(last.value);
       }
 
-      return firstNode ? firstNode.value : null
+      return last ? last.value : null
     },
 
     isEmpty() {
