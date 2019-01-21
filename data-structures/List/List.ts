@@ -1,51 +1,105 @@
-type NodeType<T> = {
+export type LinkedListNode<T> = {
   value: T;
-  next: NodeType<T>|null;
+  next: LinkedListNode<T>|null;
+  previous: LinkedListNode<T>|null;
 };
 
-const createNode = <T>(element: T): NodeType<T> => {
-  let next: NodeType<T>|null = null;
+type Node<T> = LinkedListNode<T>;
+
+export const createLinkedListNode = <T>(value: T): Node<T> => {
+  let next: Node<T>|null = null;
+  let previous: Node<T>|null = null;
+
   return {
-    value: element,
-    next
+    value,
+    next,
+    previous,
   }
 };
 
-type ListType<T> = {
-  head: NodeType<T>|null;
-  size: number;
-  add: (value: T) => void;
-  findLast: () => NodeType<T>|null
+export type LinkedList<T> = {
+  head: Node<T>|null
+  isEmpty: () => boolean
+  first: () => Node<T>|null
+  last: () => Node<T>|null
+  length: () => number
+  find: (value: T) => Node<T>|null
+  append: (value: T) => void
+  insert: (before: Node<T>, value: T) => void
+  remove: (value: T) => Node<T>|null
 };
 
-const createList = <T>(): ListType<T> => {
-  let size = 0;
-  let head: NodeType<T>|null = null;
+export const createLinkedList = <T>(): LinkedList<T> => {
+  let head: Node<T>|null = null;
+  let length = 0;
 
   return {
     head,
-    size,
-    find(element) {},
-    findLast() {
+    isEmpty() {
+      return !Boolean(head);
+    },
+    first() {
+      return head;
+    },
+    last() {
       let tmp = head;
-      while (tmp && tmp.next) {
-        tmp = tmp.next;
+      if (tmp) {
+        if (tmp.previous) {
+          tmp = tmp.previous;
+        } else {
+          while(tmp.next) {
+            tmp = tmp.next;
+          }
+        }
       }
       return tmp;
     },
-    add(value: T) {
-      const node: NodeType<T> = createNode(value);
+    append(value: T) {
+      const newNode = createLinkedListNode(value);
+      const lastNode = this.last();
 
-      if (!head) {
-        head = node;
+      if (lastNode) {
+        lastNode.next = newNode;
+        newNode.previous = lastNode;
       } else {
-        const lastNode = this.findLast();
-        if (lastNode) {
-          lastNode.next = node;
-        }
+        head = newNode;
+      }
+      length += 1;
+    },
+    length() {
+      return length;
+    },
+
+    find(value: T) {
+      let tmp = head;
+      while (tmp && tmp.value !== value) {
+        tmp = tmp.next;
       }
 
-      size += 1;
+      return !!tmp && tmp.value === value ? tmp : null;
     },
+    insert(before: Node<T>, value: T) {
+      const newNode = createLinkedListNode(value);
+      const tmp = before.next;
+
+      newNode.previous = before;
+      before.next = newNode;
+      newNode.next = tmp;
+    },
+    remove(value: T) {
+      const targetNode: Node<T>|null = this.find(value);
+      if (targetNode) {
+        const { previous, next } = targetNode;
+        if (!previous && next) {
+          next.previous = null;
+        } else if (previous && !next) {
+          previous.next = null
+        } else if (previous && next) {
+          previous.next = next;
+          next.previous = previous;
+        }
+      }
+      return targetNode;
+    }
   };
 }
