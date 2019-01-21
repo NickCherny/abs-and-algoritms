@@ -98,8 +98,12 @@ export const createLinkedList = <T>(): LinkedList<T> => {
           previous.next = next;
           next.previous = previous;
         }
+
+        length -= 1;
       }
       return targetNode;
     }
   };
 }
+
+export default createLinkedList;
