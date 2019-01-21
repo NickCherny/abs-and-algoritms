@@ -27,6 +27,7 @@ export type LinkedList<T> = {
   append: (value: T) => void
   insert: (before: Node<T>, value: T) => void
   remove: (value: T) => Node<T>|null
+  toArray: () => Array<T>
 };
 
 export const createLinkedList = <T>(): LinkedList<T> => {
@@ -102,6 +103,18 @@ export const createLinkedList = <T>(): LinkedList<T> => {
         length -= 1;
       }
       return targetNode;
+    },
+
+    toArray() {
+      let tmp = head;
+      const items: Array<T> = [];
+
+      while(tmp) {
+        items.push(tmp.value);
+        tmp = tmp.next;
+      }
+
+      return items;
     }
   };
 }
