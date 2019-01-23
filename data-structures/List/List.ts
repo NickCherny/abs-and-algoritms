@@ -116,7 +116,7 @@ export const createLinkedList = <T>(): LinkedList<T> => {
       }
 
       return items;
-    },
+    }, 
 
     deleteHead() {
       let result: Node<T>|null;

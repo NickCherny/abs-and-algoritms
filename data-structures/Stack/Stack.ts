@@ -7,6 +7,7 @@ import {
 export type Stack<T> = {
   push: (value: T) => void
   pop: () => T|null
+  peek: () => T|null
   toArray: () => Array<T>
   isEmpty: () => boolean
 }
@@ -26,6 +27,11 @@ export const createStack = <T>(): Stack<T> => {
       }
 
       return last ? last.value : null
+    },
+
+    peek() {
+      const targetNode = store.last();
+      return targetNode ? targetNode.value : null;
     },
 
     isEmpty() {
